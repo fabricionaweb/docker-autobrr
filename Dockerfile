@@ -14,7 +14,7 @@ ADD https://github.com/autobrr/autobrr.git#v$VERSION ./
 FROM base AS build-frontend
 
 # build dependencies
-RUN apk add --no-cache build-base python3 nodejs-current && corepack enable
+RUN apk add --no-cache nodejs-current && corepack enable
 
 # node_modules
 COPY --from=source /src/web/package.json /src/web/pnpm-lock.yaml /src/web/tsconfig.json ./
