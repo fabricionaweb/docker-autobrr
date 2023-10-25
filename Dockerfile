@@ -42,9 +42,10 @@ COPY --from=source /src/pkg ./pkg
 COPY --from=source /src/internal ./internal
 COPY --from=build-frontend /src/dist ./web/dist
 ARG VERSION
+ARG COMMIT=$VERSION
 RUN mkdir /build && \
     go build \
-        -ldflags "-s -w -X main.version=$VERSION -X main.date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+        -ldflags "-s -w -X main.version=$VERSION -X main.commit=$COMMIT -X main.date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
         -o /build/ ./cmd/...
 
 # runtime stage ================================================================

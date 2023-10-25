@@ -18,6 +18,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Get short commit SHA
+        run: echo "COMMIT=$(git rev-parse --short HEAD)" >>"$GITHUB_ENV"
+
       - name: Get environment from a file
         run: cat .env >>"$GITHUB_ENV"
 
@@ -59,6 +62,7 @@ jobs:
           build-args: |
             BRANCH=${{ env.BRANCH }}
             VERSION=${{ env.VERSION }}
+            COMMIT=${{ env.COMMIT }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
