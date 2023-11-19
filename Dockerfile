@@ -57,12 +57,12 @@ WORKDIR /config
 VOLUME /config
 EXPOSE 7474
 
-# runtime dependencies
-RUN apk add --no-cache tzdata s6-overlay curl
-
 # copy files
 COPY --from=build-backend /build /app
 COPY ./rootfs/. /
+
+# runtime dependencies
+RUN apk add --no-cache tzdata s6-overlay curl
 
 # run using s6-overlay
 ENTRYPOINT ["/entrypoint.sh"]
