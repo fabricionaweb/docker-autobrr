@@ -46,14 +46,17 @@ COPY --from=build-frontend /src/dist ./web/dist
 ARG VERSION
 ARG COMMIT=$VERSION
 RUN mkdir /build && \
-    go build \
-        -ldflags "-s -w -X main.version=$VERSION -X main.commit=$COMMIT -X main.date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
+    go build -trimpath -ldflags "-s -w \
+        -X main.version=$VERSION \
+        -X main.commit=$COMMIT \
+        -X main.date=$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
         -o /build/ ./cmd/...
 
 # runtime stage ================================================================
 FROM base
 
 ENV S6_VERBOSITY=0 S6_BEHAVIOUR_IF_STAGE2_FAILS=2 PUID=65534 PGID=65534
+ENV AUTOBRR__HOST=0.0.0.0 AUTOBRR__LOG_PATH=/config/logs/autobrr.log
 WORKDIR /config
 VOLUME /config
 EXPOSE 7474

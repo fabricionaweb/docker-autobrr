@@ -12,19 +12,11 @@ fi
 if [[ ! -f "$CONFIG_FILE" ]]; then
   TMP_FILE="/tmp/$0.$$.$RANDOM"
   cat <<EOF >"$TMP_FILE"
-host = "0.0.0.0"
-logPath = "$LOGS_DIR/autobrr.log"
 logLevel = "INFO"
 sessionSecret = "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)"
 EOF
 
   install -m644 -o $PUID -g $PGID "$TMP_FILE" "$CONFIG_FILE"
-elif [[ $(grep -c "^[^#]*logPath" "$CONFIG_FILE") == 0 ]]; then
-  # if logPath doenst exist (or is commented) in config, insert one
-  echo "logPath = \"$LOGS_DIR/autobrr.log\"" >> "$CONFIG_FILE"
-else
-  # replace logPath
-  sed -i "/^[^#]*logPath[ ]*=/s,=.*,= \"$LOGS_DIR/autobrr.log\"," "$CONFIG_FILE"
 fi
 
 # change chdir
