@@ -10,7 +10,7 @@ fi
 
 # create initial config file
 if [[ ! -f "$CONFIG_FILE" ]]; then
-  TMP_FILE="/tmp/$0.$$.$RANDOM"
+  TMP_FILE="$(mktemp)"
   cat <<EOF >"$TMP_FILE"
 logLevel = "INFO"
 sessionSecret = "$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)"
