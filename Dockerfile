@@ -16,11 +16,11 @@ RUN tar --strip-components=1 -xf /tmp/source.tgz
 FROM base AS build-frontend
 
 # build dependencies
-RUN apk add --no-cache nodejs-current && corepack enable
+RUN apk add --no-cache pnpm
 
 # node_modules
 COPY --from=source /src/web/package.json /src/web/pnpm-lock.yaml /src/web/tsconfig.json ./
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # frontend source and build
 COPY --from=source /src/web ./
